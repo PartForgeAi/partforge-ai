@@ -1,4 +1,21 @@
+"use client";
+
+import { useState } from "react";
+import DesignChat from "./DesignChat";
+
 export default function Hero() {
+  const [request, setRequest] = useState("");
+  const [started, setStarted] = useState(false);
+
+  function startDesign() {
+    if (request.trim().length === 0) return;
+    setStarted(true);
+  }
+
+  if (started) {
+    return <DesignChat request={request} />;
+  }
+
   return (
     <section className="mx-auto flex max-w-5xl flex-col items-center px-6 pt-24 text-center">
       <div className="mb-6 rounded-full border border-blue-400/30 bg-blue-400/10 px-4 py-2 text-sm text-blue-200">
@@ -16,6 +33,8 @@ export default function Hero() {
 
       <div className="mt-10 w-full max-w-3xl rounded-3xl border border-white/10 bg-white/5 p-4 shadow-2xl">
         <textarea
+          value={request}
+          onChange={(event) => setRequest(event.target.value)}
           className="min-h-32 w-full resize-none rounded-2xl border border-white/10 bg-[#111827] p-5 text-lg text-white outline-none placeholder:text-gray-500"
           placeholder="Example: Design a wall bracket for a Dyson V15 vacuum"
         />
@@ -25,7 +44,10 @@ export default function Hero() {
             STL • STEP • 3MF • Parametric editing later
           </div>
 
-          <button className="rounded-xl bg-blue-600 px-7 py-3 font-medium text-white hover:bg-blue-500">
+          <button
+            onClick={startDesign}
+            className="rounded-xl bg-blue-600 px-7 py-3 font-medium text-white hover:bg-blue-500"
+          >
             Generate design
           </button>
         </div>
