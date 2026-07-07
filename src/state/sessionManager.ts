@@ -1,15 +1,18 @@
 import { startConversation, answerQuestion } from "../ai/conversationEngine";
 import { generateRecommendations } from "../ai/recommendationEngine";
+import { validateSpecification } from "../ai/validationEngine";
 import { ProjectState } from "./projectState";
 
 export function createDesignSession(userRequest: string): ProjectState {
   const conversation = startConversation(userRequest);
   const recommendations = generateRecommendations(conversation.specification);
+  const validationIssues = validateSpecification(conversation.specification);
 
   return {
     userRequest,
     specification: conversation.specification,
     recommendations,
+    validationIssues,
     questions: conversation.questions,
     conversationHistory: [
       `User request: ${userRequest}`,
@@ -37,16 +40,15 @@ export function updateDesignSessionWithAnswer(
   );
 
   const recommendations = generateRecommendations(conversation.specification);
+  const validationIssues = validateSpecification(conversation.specification);
 
   return {
     ...currentState,
     specification: conversation.specification,
     recommendations,
+    validationIssues,
     questions: conversation.questions,
-    conversationHistory: [
-      ...currentState.conversationHistory,
-      `Answered: ${answer}`,
-    ],
+    conversationHistory: [...currentState.conversationHistory, `Answered: ${answer}`],
     status: conversation.isReadyForSpecification ? "blueprint" : "asking",
   };
 }

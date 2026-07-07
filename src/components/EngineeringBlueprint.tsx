@@ -82,6 +82,40 @@ export default function EngineeringBlueprint() {
       </div>
 
       <div className="mt-8">
+        <h3 className="text-lg font-semibold">Validation</h3>
+
+        <div className="mt-3 space-y-3">
+          {project.validationIssues.length === 0 ? (
+            <div className="rounded-xl bg-green-500/20 p-4 text-sm text-green-300">
+              ✓ No engineering issues detected
+            </div>
+          ) : (
+            project.validationIssues.map((issue) => (
+              <div
+                key={issue.title}
+                className={`rounded-xl border p-4 text-sm ${
+                  issue.severity === "error"
+                    ? "border-red-400/30 bg-red-500/10 text-red-200"
+                    : issue.severity === "warning"
+                      ? "border-yellow-400/30 bg-yellow-500/10 text-yellow-200"
+                      : "border-blue-400/30 bg-blue-500/10 text-blue-200"
+                }`}
+              >
+                <div className="font-semibold">{issue.title}</div>
+                <p className="mt-1">{issue.message}</p>
+
+                {issue.recommendation && (
+                  <p className="mt-2 text-gray-300">
+                    Recommendation: {issue.recommendation}
+                  </p>
+                )}
+              </div>
+            ))
+          )}
+        </div>
+      </div>
+
+      <div className="mt-8">
         <h3 className="text-lg font-semibold">Recommendations</h3>
 
         <div className="mt-3 space-y-3">
