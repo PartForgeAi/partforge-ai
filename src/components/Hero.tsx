@@ -1,19 +1,20 @@
 "use client";
 
 import { useState } from "react";
+import { useProject } from "../state/ProjectContext";
 import DesignChat from "./DesignChat";
 
 export default function Hero() {
   const [request, setRequest] = useState("");
-  const [started, setStarted] = useState(false);
+  const { project, startProject } = useProject();
 
   function startDesign() {
     if (request.trim().length === 0) return;
-    setStarted(true);
+    startProject(request);
   }
 
-  if (started) {
-    return <DesignChat request={request} />;
+  if (project) {
+    return <DesignChat />;
   }
 
   return (
@@ -28,7 +29,7 @@ export default function Hero() {
 
       <p className="mt-6 max-w-2xl text-lg text-gray-300">
         Describe the part you need. PartForge AI asks only the important
-        questions, then prepares a printable engineering design.
+        questions, then prepares a printable engineering blueprint.
       </p>
 
       <div className="mt-10 w-full max-w-3xl rounded-3xl border border-white/10 bg-white/5 p-4 shadow-2xl">
@@ -48,7 +49,7 @@ export default function Hero() {
             onClick={startDesign}
             className="rounded-xl bg-blue-600 px-7 py-3 font-medium text-white hover:bg-blue-500"
           >
-            Generate design
+            Engineer my part
           </button>
         </div>
       </div>

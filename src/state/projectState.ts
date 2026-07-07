@@ -1,6 +1,12 @@
 import { EngineeringSpecification } from "../ai/engineeringSpecification";
 import { Recommendation } from "../ai/recommendationEngine";
 
+export interface Question {
+  id: string;
+  title: string;
+  options: string[];
+}
+
 export interface ProjectState {
   userRequest: string;
 
@@ -8,7 +14,7 @@ export interface ProjectState {
 
   recommendations: Recommendation[];
 
-  missingInformation: string[];
+  questions: Question[];
 
   conversationHistory: string[];
 

@@ -10,7 +10,7 @@ export function createDesignSession(userRequest: string): ProjectState {
     userRequest,
     specification: conversation.specification,
     recommendations,
-    missingInformation: conversation.questions.map((question) => question.title),
+    questions: conversation.questions,
     conversationHistory: [
       `User request: ${userRequest}`,
       `Detected part type: ${
@@ -29,8 +29,8 @@ export function updateDesignSessionWithAnswer(
   const conversation = answerQuestion(
     {
       specification: currentState.specification,
-      questions: [],
-      isReadyForSpecification: false,
+      questions: currentState.questions,
+      isReadyForSpecification: currentState.questions.length === 0,
     },
     questionId,
     answer
@@ -42,7 +42,7 @@ export function updateDesignSessionWithAnswer(
     ...currentState,
     specification: conversation.specification,
     recommendations,
-    missingInformation: conversation.questions.map((question) => question.title),
+    questions: conversation.questions,
     conversationHistory: [
       ...currentState.conversationHistory,
       `Answered: ${answer}`,
